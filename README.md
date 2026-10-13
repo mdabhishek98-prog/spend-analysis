@@ -24,6 +24,12 @@ Clear it later from the bottom of **History**.
 npx eas-cli@latest build -p android --profile preview
 ```
 
+## Publish to Google Play
+
+See [store/PLAY_STORE_GUIDE.md](store/PLAY_STORE_GUIDE.md). Store text and graphics are in `store/`.
+
+Privacy policy: https://mdabhishek98-prog.github.io/spend-analysis/privacy.html
+
 ## Screens
 
 - **Home**: spent vs income, Needs / Wants / Saved split, safe-to-spend today, recent entries

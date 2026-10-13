@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Spend Analysis icons</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: #E9E7E1; color: #15171C; padding: 36px 40px; width: 1400px; }
+  h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+  .sub { color: #5E626B; font-size: 14px; margin: 4px 0 28px; }
+  .row { display: flex; gap: 28px; }
+  .opt { flex: 1; background: #fff; border-radius: 24px; padding: 24px; }
+  .tag { font-size: 12px; font-weight: 800; letter-spacing: 1.4px; color: #3D5AFE; }
+  .name { font-size: 18px; font-weight: 800; margin: 2px 0 4px; }
+  .desc { font-size: 13px; color: #5E626B; line-height: 1.5; min-height: 40px; }
+  .big { display: flex; justify-content: center; margin: 20px 0; }
+  .big svg { width: 200px; height: 200px; border-radius: 46px; }
+  .home { background: #2B3A55; border-radius: 18px; padding: 18px; display: flex; justify-content: space-around; }
+  .app { text-align: center; color: #fff; font-size: 11px; font-weight: 500; }
+  .app .ic { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; margin: 0 auto 6px; background: #ccc; }
+  .app .ic svg { width: 56px; height: 56px; }
+  .ghost { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.18); margin: 0 auto 6px; }
+</style>
+</head>
+<body>
+  <h1>Spend Analysis: app icon options</h1>
+  <p class="sub">Each option shown large and at real size on an Android home screen, where icons are cropped to a circle.</p>
+
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <symbol id="a" viewBox="0 0 512 512">
+        <rect width="512" height="512" fill="#3D5AFE"/>
+        <circle cx="256" cy="256" r="132" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="44"/>
+        <circle cx="256" cy="256" r="132" fill="none" stroke="#3DDC97" stroke-width="44" stroke-dasharray="372 830" transform="rotate(-90 256 256)"/>
+        <circle cx="256" cy="256" r="132" fill="none" stroke="#FFB067" stroke-width="44" stroke-dasharray="190 830" stroke-dashoffset="-392" transform="rotate(-90 256 256)"/>
+        <circle cx="256" cy="256" r="132" fill="none" stroke="#FFFFFF" stroke-width="44" stroke-dasharray="190 830" stroke-dashoffset="-602" transform="rotate(-90 256 256)"/>
+        <text x="256" y="300" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="130" fill="#fff">₹</text>
+      </symbol>
+      <symbol id="b" viewBox="0 0 512 512">
+        <rect width="512" height="512" fill="#15171C"/>
+        <rect x="130" y="250" width="64" height="132" rx="18" fill="#0E9F6E"/>
+        <rect x="224" y="190" width="64" height="192" rx="18" fill="#F2994A"/>
+        <rect x="318" y="130" width="64" height="252" rx="18" fill="#7B6CF0"/>
+      </symbol>
+      <symbol id="c" viewBox="0 0 512 512">
+        <rect width="512" height="512" fill="#F5F4F0"/>
+        <path d="M256 256 L377.2 186 A140 140 0 1 1 256 116 Z" fill="#15171C"/>
+        <path d="M266 238.7 L266 98.7 A140 140 0 0 1 387.2 168.7 Z" fill="#3D5AFE"/>
+        <circle cx="256" cy="256" r="46" fill="#F5F4F0"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="row">
+    <div class="opt">
+      <div class="tag">OPTION A</div>
+      <div class="name">Rupee ring</div>
+      <div class="desc">₹ inside a ring split into Needs, Wants and Savings. Says "money + priorities" at a glance.</div>
+      <div class="big"><svg><use href="#a"/></svg></div>
+      <div class="home">
+        <div class="app"><div class="ghost"></div>Phone</div>
+        <div class="app"><div class="ic"><svg><use href="#a"/></svg></div>Spend Analysis</div>
+        <div class="app"><div class="ghost"></div>Photos</div>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="tag">OPTION B</div>
+      <div class="name">Rising bars</div>
+      <div class="desc">Three bars in the priority colours, growing left to right. Feels like analysis and growth.</div>
+      <div class="big"><svg><use href="#b"/></svg></div>
+      <div class="home">
+        <div class="app"><div class="ghost"></div>Phone</div>
+        <div class="app"><div class="ic"><svg><use href="#b"/></svg></div>Spend Analysis</div>
+        <div class="app"><div class="ghost"></div>Photos</div>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="tag">OPTION C</div>
+      <div class="name">Split pie</div>
+      <div class="desc">A pie chart with one slice pulled out. Minimal, calm, matches the app's off-white look.</div>
+      <div class="big"><svg><use href="#c"/></svg></div>
+      <div class="home">
+        <div class="app"><div class="ghost"></div>Phone</div>
+        <div class="app"><div class="ic"><svg><use href="#c"/></svg></div>Spend Analysis</div>
+        <div class="app"><div class="ghost"></div>Photos</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
