@@ -41,6 +41,13 @@
     "experiments": {
       "typedRoutes": true,
       "baseUrl": "/spend-analysis"
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "3bf7688e-d67b-4032-8a36-a72cc9a4c7be"
+      }
+    },
+    "owner": "abhi_md"
   }
 }
