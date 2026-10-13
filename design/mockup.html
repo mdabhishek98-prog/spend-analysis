@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Spend Analysis design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+<style>
+  :root {
+    --bg: #F5F4F0; --card: #FFFFFF; --ink: #15171C; --ink-2: #5E626B; --ink-3: #9A9DA4; --line: #E8E6E1;
+    --hero: #15171C; --brand: #3D5AFE;
+    --need: #0E9F6E; --need-bg: #E3F5EE;
+    --want: #F2994A; --want-bg: #FDF0E4;
+    --save: #6C5CE7; --save-bg: #EEEBFD;
+    --danger: #E5484D; --danger-bg: #FDECEC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: #E9E7E1; color: var(--ink); padding: 40px 24px 60px; }
+  .intro { max-width: 1320px; margin: 0 auto 32px; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end; justify-content: space-between; }
+  .intro h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+  .intro p { color: var(--ink-2); font-size: 14px; margin-top: 4px; max-width: 520px; line-height: 1.5; }
+  .swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sw { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 999px; padding: 6px 12px 6px 6px; font-size: 12px; font-weight: 600; }
+  .sw i { width: 20px; height: 20px; border-radius: 50%; display: block; }
+  .row { display: flex; gap: 28px; justify-content: center; flex-wrap: wrap; max-width: 1320px; margin: 0 auto; }
+  .col { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .caption { font-size: 13px; font-weight: 700; color: var(--ink-2); text-transform: uppercase; letter-spacing: 1.2px; }
+  .phone { width: 300px; height: 640px; border-radius: 44px; background: #0B0C0F; padding: 10px; box-shadow: 0 30px 60px -20px rgba(20,22,28,0.35); }
+  .screen { width: 100%; height: 100%; border-radius: 36px; background: var(--bg); overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .status { height: 34px; display: flex; justify-content: space-between; align-items: center; padding: 6px 22px 0; font-size: 11px; font-weight: 700; }
+  .scroll { flex: 1; overflow: hidden; padding: 6px 16px 0; }
+  .tabbar { height: 68px; background: #fff; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-around; padding: 0 8px 8px; position: relative; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; font-weight: 600; color: var(--ink-3); width: 54px; }
+  .tab i { font-size: 21px; }
+  .tab.on { color: var(--ink); }
+  .fab { width: 52px; height: 52px; border-radius: 18px; background: var(--brand); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-top: -30px; box-shadow: 0 10px 20px -6px rgba(61,90,254,0.6); }
+  .muted { color: var(--ink-2); }
+  .tiny { font-size: 11px; }
+  .sm { font-size: 12px; }
+  .b { font-weight: 700; }
+  .card { background: var(--card); border-radius: 20px; padding: 14px; }
+  .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; }
+  .need { background: var(--need-bg); color: var(--need); }
+  .want { background: var(--want-bg); color: #C46A1B; }
+  .save { background: var(--save-bg); color: var(--save); }
+  .icon-tile { width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .tx { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .tx:last-child { border-bottom: 0; }
+  .bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; display: flex; }
+  .bar > span { display: block; height: 100%; }
+  .h-row { display: flex; justify-content: space-between; align-items: center; }
+</style>
+</head>
+<body>
+  <div class="intro">
+    <div>
+      <h1>Spend Analysis: proposed design</h1>
+      <p>Clean, modern and calm. Every expense gets a priority (Need, Want or Saving). The app tells you where your money should go, using the 50 / 30 / 20 rule, and how much is safe to spend today.</p>
+    </div>
+    <div class="swatches">
+      <span class="sw"><i style="background:#15171C"></i>Ink</span>
+      <span class="sw"><i style="background:#3D5AFE"></i>Action</span>
+      <span class="sw"><i style="background:#0E9F6E"></i>Needs</span>
+      <span class="sw"><i style="background:#F2994A"></i>Wants</span>
+      <span class="sw"><i style="background:#6C5CE7"></i>Savings</span>
+      <span class="sw"><i style="background:#E5484D"></i>Over budget</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- 1. HOME -->
+    <div class="col">
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span><i class="ti ti-antenna-bars-5"></i> <i class="ti ti-wifi"></i> <i class="ti ti-battery-3"></i></span></div>
+        <div class="scroll">
+          <div class="h-row" style="margin-bottom:12px">
+            <div><div class="tiny muted">Good morning, Abhishek</div><div class="b" style="font-size:18px">October</div></div>
+            <div style="display:flex;gap:6px"><span class="icon-tile" style="background:#fff;width:34px;height:34px"><i class="ti ti-chevron-left"></i></span><span class="icon-tile" style="background:#fff;width:34px;height:34px"><i class="ti ti-chevron-right"></i></span></div>
+          </div>
+
+          <div style="background:var(--hero);color:#fff;border-radius:24px;padding:16px">
+            <div class="tiny" style="color:#A7AAB2">Spent this month</div>
+            <div style="font-size:30px;font-weight:800;letter-spacing:-1px;margin:2px 0 2px">₹45,967</div>
+            <div class="tiny" style="color:#A7AAB2">of ₹68,000 income · <span style="color:#8CE0BC">₹22,033 left</span></div>
+            <div class="bar" style="margin:12px 0 8px;background:#2A2D35;height:10px">
+              <span style="width:45%;background:var(--need)"></span><span style="width:18%;background:var(--want)"></span><span style="width:4%;background:#2A2D35"></span><span style="width:32%;background:var(--save)"></span>
+            </div>
+            <div style="display:flex;gap:10px;font-size:10px;color:#C9CBD1;font-weight:600">
+              <span><b style="color:var(--need)">●</b> Needs 45%</span><span><b style="color:var(--want)">●</b> Wants 18%</span><span><b style="color:var(--save)">●</b> Saved 32%</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin:10px 0">
+            <div class="card" style="flex:1;padding:12px">
+              <div class="tiny muted">Safe to spend today</div>
+              <div class="b" style="font-size:18px;margin-top:2px">₹1,160</div>
+            </div>
+            <div class="card" style="flex:1;padding:12px;background:var(--want-bg)">
+              <div class="tiny" style="color:#C46A1B;font-weight:600"><i class="ti ti-alert-triangle"></i> Eating out</div>
+              <div class="b" style="font-size:13px;margin-top:2px;color:#8A4A10">₹850 over budget</div>
+            </div>
+          </div>
+
+          <div class="h-row" style="margin:4px 2px 4px"><span class="b sm">Recent</span><span class="tiny b" style="color:var(--brand)">See all</span></div>
+          <div class="card" style="padding:2px 12px">
+            <div class="tx"><span class="icon-tile need"><i class="ti ti-school"></i></span><div style="flex:1"><div class="sm b">Tuition</div><div class="tiny muted">Today · UPI</div></div><div style="text-align:right"><div class="sm b">−₹1,500</div><span class="chip need">Need</span></div></div>
+            <div class="tx"><span class="icon-tile want"><i class="ti ti-tools-kitchen-2"></i></span><div style="flex:1"><div class="sm b">Zomato</div><div class="tiny muted">Yesterday · UPI</div></div><div style="text-align:right"><div class="sm b">−₹420</div><span class="chip want">Want</span></div></div>
+            <div class="tx"><span class="icon-tile need"><i class="ti ti-basket"></i></span><div style="flex:1"><div class="sm b">Milk and veggies</div><div class="tiny muted">Yesterday · Cash</div></div><div style="text-align:right"><div class="sm b">−₹360</div><span class="chip need">Need</span></div></div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="tab on"><i class="ti ti-home"></i>Home</div>
+          <div class="tab"><i class="ti ti-chart-pie"></i>Insights</div>
+          <div class="fab"><i class="ti ti-plus"></i></div>
+          <div class="tab"><i class="ti ti-target"></i>Budgets</div>
+          <div class="tab"><i class="ti ti-list-details"></i>History</div>
+        </div>
+      </div></div>
+      <div class="caption">1 · Home</div>
+    </div>
+
+    <!-- 2. ADD -->
+    <div class="col">
+      <div class="phone"><div class="screen" style="background:#fff">
+        <div class="status"><span>9:41</span><span><i class="ti ti-antenna-bars-5"></i> <i class="ti ti-wifi"></i> <i class="ti ti-battery-3"></i></span></div>
+        <div class="scroll" style="padding-top:2px">
+          <div class="h-row" style="margin-bottom:10px">
+            <i class="ti ti-x" style="font-size:20px"></i>
+            <div style="display:flex;background:var(--bg);border-radius:12px;padding:3px;font-size:12px;font-weight:700">
+              <span style="background:#fff;border-radius:9px;padding:6px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08)">Expense</span>
+              <span style="padding:6px 14px;color:var(--ink-3)">Income</span>
+            </div>
+            <span style="width:20px"></span>
+          </div>
+          <div style="text-align:center;margin:14px 0 4px">
+            <div style="font-size:42px;font-weight:800;letter-spacing:-1.5px">₹420<span style="color:var(--brand);font-weight:400">|</span></div>
+            <div class="tiny muted">Zomato dinner</div>
+          </div>
+
+          <div class="sm b" style="margin:14px 0 8px">Category</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center">
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--bg)"><i class="ti ti-home-2"></i></span><div class="tiny" style="margin-top:3px">Rent</div></div>
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--bg)"><i class="ti ti-basket"></i></span><div class="tiny" style="margin-top:3px">Groceries</div></div>
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--ink);color:#fff"><i class="ti ti-tools-kitchen-2"></i></span><div class="tiny b" style="margin-top:3px">Eating out</div></div>
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--bg)"><i class="ti ti-bolt"></i></span><div class="tiny" style="margin-top:3px">Bills</div></div>
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--bg)"><i class="ti ti-car"></i></span><div class="tiny" style="margin-top:3px">Transport</div></div>
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--bg)"><i class="ti ti-shopping-bag"></i></span><div class="tiny" style="margin-top:3px">Shopping</div></div>
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--bg)"><i class="ti ti-heartbeat"></i></span><div class="tiny" style="margin-top:3px">Health</div></div>
+            <div><span class="icon-tile" style="margin:0 auto;background:var(--bg)"><i class="ti ti-dots"></i></span><div class="tiny" style="margin-top:3px">More</div></div>
+          </div>
+
+          <div class="h-row" style="margin:16px 0 8px"><span class="sm b">Priority</span><span class="tiny muted">Suggested: Want</span></div>
+          <div style="display:flex;gap:6px">
+            <div style="flex:1;border:1.5px solid var(--line);border-radius:14px;padding:8px;text-align:center"><div class="sm b" style="color:var(--need)">Need</div><div class="tiny muted">Must pay</div></div>
+            <div style="flex:1;border:1.5px solid var(--want);background:var(--want-bg);border-radius:14px;padding:8px;text-align:center"><div class="sm b" style="color:#C46A1B">Want</div><div class="tiny" style="color:#C46A1B">Nice to have</div></div>
+            <div style="flex:1;border:1.5px solid var(--line);border-radius:14px;padding:8px;text-align:center"><div class="sm b" style="color:var(--save)">Saving</div><div class="tiny muted">SIP, FD, gold</div></div>
+          </div>
+
+          <div style="display:flex;gap:6px;margin-top:14px">
+            <span class="chip" style="background:var(--bg);color:var(--ink);padding:7px 10px;font-size:11px"><i class="ti ti-calendar"></i>Today</span>
+            <span class="chip" style="background:var(--ink);color:#fff;padding:7px 10px;font-size:11px"><i class="ti ti-qrcode"></i>UPI</span>
+            <span class="chip" style="background:var(--bg);color:var(--ink);padding:7px 10px;font-size:11px"><i class="ti ti-cash"></i>Cash</span>
+            <span class="chip" style="background:var(--bg);color:var(--ink);padding:7px 10px;font-size:11px"><i class="ti ti-credit-card"></i>Card</span>
+          </div>
+        </div>
+        <div style="padding:10px 16px 22px">
+          <div style="background:var(--brand);color:#fff;border-radius:16px;text-align:center;padding:14px;font-weight:700;font-size:14px">Save expense</div>
+        </div>
+      </div></div>
+      <div class="caption">2 · Add expense</div>
+    </div>
+
+    <!-- 3. INSIGHTS -->
+    <div class="col">
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span><i class="ti ti-antenna-bars-5"></i> <i class="ti ti-wifi"></i> <i class="ti ti-battery-3"></i></span></div>
+        <div class="scroll">
+          <div class="b" style="font-size:18px">Insights</div>
+          <div class="tiny muted" style="margin-bottom:10px">Where your money should go</div>
+
+          <div class="card">
+            <div class="h-row"><span class="sm b">Your priority split</span><span class="chip need"><i class="ti ti-check"></i>On track</span></div>
+            <div class="tiny muted" style="margin:2px 0 10px">Actual vs. the 50 / 30 / 20 rule</div>
+            <div style="display:grid;gap:10px">
+              <div><div class="h-row tiny"><span class="b" style="color:var(--need)">Needs</span><span><b>45%</b> <span class="muted">/ 50%</span></span></div><div class="bar" style="margin-top:4px;position:relative"><span style="width:45%;background:var(--need)"></span></div></div>
+              <div><div class="h-row tiny"><span class="b" style="color:#C46A1B">Wants</span><span><b>18%</b> <span class="muted">/ 30%</span></span></div><div class="bar" style="margin-top:4px"><span style="width:18%;background:var(--want)"></span></div></div>
+              <div><div class="h-row tiny"><span class="b" style="color:var(--save)">Savings</span><span><b>32%</b> <span class="muted">/ 20%</span></span></div><div class="bar" style="margin-top:4px"><span style="width:32%;background:var(--save)"></span></div></div>
+            </div>
+          </div>
+
+          <div class="sm b" style="margin:12px 2px 6px">What to do next</div>
+          <div class="card" style="padding:11px;display:flex;gap:10px;margin-bottom:8px">
+            <span class="icon-tile" style="background:var(--danger-bg);color:var(--danger);width:30px;height:30px;font-size:16px"><i class="ti ti-trending-up"></i></span>
+            <div class="sm" style="line-height:1.4"><b>Eating out is up ₹1,050</b> vs September. Cap it at ₹2,000 to stay on budget.</div>
+          </div>
+          <div class="card" style="padding:11px;display:flex;gap:10px;margin-bottom:8px">
+            <span class="icon-tile save" style="width:30px;height:30px;font-size:16px"><i class="ti ti-pig-money"></i></span>
+            <div class="sm" style="line-height:1.4"><b>Move ₹15,000 to savings</b> now. You'll still have ₹1,160 a day for the rest of the month.</div>
+          </div>
+          <div class="card" style="padding:11px;display:flex;gap:10px">
+            <span class="icon-tile want" style="width:30px;height:30px;font-size:16px"><i class="ti ti-coins"></i></span>
+            <div class="sm" style="line-height:1.4"><b>14 small spends</b> under ₹500 added up to ₹3,240.</div>
+          </div>
+
+          <div class="card" style="margin-top:10px;display:flex;align-items:center;gap:14px">
+            <svg width="70" height="70" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#E8E6E1" stroke-width="5"/><circle cx="18" cy="18" r="14" fill="none" stroke="#0E9F6E" stroke-width="5" stroke-dasharray="39 88" transform="rotate(-90 18 18)"/><circle cx="18" cy="18" r="14" fill="none" stroke="#3D5AFE" stroke-width="5" stroke-dasharray="16 88" stroke-dashoffset="-39" transform="rotate(-90 18 18)"/><circle cx="18" cy="18" r="14" fill="none" stroke="#F2994A" stroke-width="5" stroke-dasharray="12 88" stroke-dashoffset="-55" transform="rotate(-90 18 18)"/></svg>
+            <div class="tiny" style="display:grid;gap:3px"><span><b style="color:#0E9F6E">●</b> Rent ₹18,000</span><span><b style="color:#3D5AFE">●</b> EMI ₹7,500</span><span><b style="color:#F2994A">●</b> Eating out ₹2,850</span></div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="tab"><i class="ti ti-home"></i>Home</div>
+          <div class="tab on"><i class="ti ti-chart-pie"></i>Insights</div>
+          <div class="fab"><i class="ti ti-plus"></i></div>
+          <div class="tab"><i class="ti ti-target"></i>Budgets</div>
+          <div class="tab"><i class="ti ti-list-details"></i>History</div>
+        </div>
+      </div></div>
+      <div class="caption">3 · Insights and priorities</div>
+    </div>
+
+    <!-- 4. BUDGETS -->
+    <div class="col">
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span><i class="ti ti-antenna-bars-5"></i> <i class="ti ti-wifi"></i> <i class="ti ti-battery-3"></i></span></div>
+        <div class="scroll">
+          <div class="b" style="font-size:18px">Budgets</div>
+          <div class="tiny muted" style="margin-bottom:10px">October · 19 days left</div>
+
+          <div class="card" style="margin-bottom:10px">
+            <div class="h-row"><span class="tiny muted">Monthly limit</span><span class="tiny b" style="color:var(--brand)">Edit</span></div>
+            <div style="font-size:22px;font-weight:800;letter-spacing:-0.5px">₹45,967 <span class="sm muted" style="font-weight:500">/ ₹50,000</span></div>
+            <div class="bar" style="margin-top:8px;height:10px"><span style="width:92%;background:var(--ink)"></span></div>
+            <div class="tiny muted" style="margin-top:6px">₹4,033 left · about ₹212 a day</div>
+          </div>
+
+          <div class="card" style="padding:4px 14px">
+            <div style="padding:10px 0;border-bottom:1px solid var(--line)">
+              <div class="h-row"><span style="display:flex;gap:8px;align-items:center"><span class="icon-tile want" style="width:28px;height:28px;font-size:15px"><i class="ti ti-tools-kitchen-2"></i></span><span class="sm b">Eating out</span></span><span class="sm"><b style="color:var(--danger)">₹2,850</b> <span class="muted">/ 2,000</span></span></div>
+              <div class="bar" style="margin-top:8px"><span style="width:100%;background:var(--danger)"></span></div>
+              <div class="tiny" style="color:var(--danger);margin-top:4px;font-weight:600">₹850 over</div>
+            </div>
+            <div style="padding:10px 0;border-bottom:1px solid var(--line)">
+              <div class="h-row"><span style="display:flex;gap:8px;align-items:center"><span class="icon-tile need" style="width:28px;height:28px;font-size:15px"><i class="ti ti-basket"></i></span><span class="sm b">Groceries</span></span><span class="sm"><b>₹4,560</b> <span class="muted">/ 5,000</span></span></div>
+              <div class="bar" style="margin-top:8px"><span style="width:91%;background:var(--need)"></span></div>
+            </div>
+            <div style="padding:10px 0;border-bottom:1px solid var(--line)">
+              <div class="h-row"><span style="display:flex;gap:8px;align-items:center"><span class="icon-tile want" style="width:28px;height:28px;font-size:15px"><i class="ti ti-shopping-bag"></i></span><span class="sm b">Shopping</span></span><span class="sm"><b>₹3,499</b> <span class="muted">/ 2,500</span></span></div>
+              <div class="bar" style="margin-top:8px"><span style="width:100%;background:var(--danger)"></span></div>
+              <div class="tiny" style="color:var(--danger);margin-top:4px;font-weight:600">₹999 over</div>
+            </div>
+            <div style="padding:10px 0">
+              <div class="h-row"><span style="display:flex;gap:8px;align-items:center"><span class="icon-tile want" style="width:28px;height:28px;font-size:15px"><i class="ti ti-movie"></i></span><span class="sm b">Entertainment</span></span><span class="sm"><b>₹649</b> <span class="muted">/ 1,000</span></span></div>
+              <div class="bar" style="margin-top:8px"><span style="width:65%;background:var(--want)"></span></div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:10px" class="sm b"><span style="color:var(--brand)"><i class="ti ti-plus"></i> Add a budget</span></div>
+        </div>
+        <div class="tabbar">
+          <div class="tab"><i class="ti ti-home"></i>Home</div>
+          <div class="tab"><i class="ti ti-chart-pie"></i>Insights</div>
+          <div class="fab"><i class="ti ti-plus"></i></div>
+          <div class="tab on"><i class="ti ti-target"></i>Budgets</div>
+          <div class="tab"><i class="ti ti-list-details"></i>History</div>
+        </div>
+      </div></div>
+      <div class="caption">4 · Budgets</div>
+    </div>
+  </div>
+</body>
+</html>

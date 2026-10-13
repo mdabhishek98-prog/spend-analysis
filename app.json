@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "hisaab-khata",
-    "slug": "hisaab-khata",
+    "name": "Spend Analysis",
+    "slug": "spend-analysis",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,15 +11,27 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#3D5AFE",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.abhishekmd.spendanalysis"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-router"
+    ],
+    "scheme": "spendanalysis",
+    "experiments": {
+      "typedRoutes": true,
+      "baseUrl": "/spend-analysis"
     }
   }
 }
