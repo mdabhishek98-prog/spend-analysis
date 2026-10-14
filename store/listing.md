@@ -68,3 +68,5 @@ https://mdabhishek98-prog.github.io/spend-analysis/privacy.html
 - App icon, 512 × 512 PNG with alpha: `store/icon-512.png`
 - Feature graphic, 1024 × 500 PNG: `store/feature-graphic.png`
 - Phone screenshots, 1080 × 1920: `store/screenshots/` (home, add, insights, budgets, history)
+- 7-inch tablet screenshots, 1080 × 1920: `store/tablet-7in/`
+- 10-inch tablet screenshots, 1800 × 3200: `store/tablet-10in/`
