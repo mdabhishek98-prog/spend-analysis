@@ -15,8 +15,8 @@ Built with Expo (React Native), Expo Router and TypeScript. All data stays on th
    ```
 3. Scan the QR code from Expo Go (phone and Mac on the same Wi-Fi).
 
-Tip: on the empty Home screen, tap **Load sample data** to explore with two months of entries.
-Clear it later from the bottom of **History**.
+
+
 
 ## Build an installable APK
 

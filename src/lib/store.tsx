@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
 import type { EntryType, PayMode, Priority } from './categories';
-import { currentMonth, shiftDate, todayISO } from './format';
+import { currentMonth } from './format';
 
 export type Entry = {
   id: string;
@@ -67,7 +67,6 @@ type Store = State & {
   setBudget: (categoryId: string, amount: number) => void;
   setMonthLimit: (amount: number) => void;
   setMonth: (month: string) => void;
-  loadSample: () => void;
   clearAll: () => void;
 };
 
@@ -102,12 +101,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const setBudget = useCallback((categoryId: string, amount: number) => dispatch({ type: 'setBudget', categoryId, amount }), []);
   const setMonthLimit = useCallback((amount: number) => dispatch({ type: 'setMonthLimit', amount }), []);
   const setMonth = useCallback((month: string) => dispatch({ type: 'setMonth', month }), []);
-  const loadSample = useCallback(() => dispatch({ type: 'replaceAll', ...sampleData() }), []);
   const clearAll = useCallback(() => dispatch({ type: 'replaceAll', entries: [], budgets: {}, monthLimit: 0 }), []);
 
   const value = useMemo(
-    () => ({ ...state, saveEntry, removeEntry, setBudget, setMonthLimit, setMonth, loadSample, clearAll }),
-    [state, saveEntry, removeEntry, setBudget, setMonthLimit, setMonth, loadSample, clearAll],
+    () => ({ ...state, saveEntry, removeEntry, setBudget, setMonthLimit, setMonth, clearAll }),
+    [state, saveEntry, removeEntry, setBudget, setMonthLimit, setMonth, clearAll],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
@@ -116,42 +114,4 @@ export function useStore(): Store {
   const s = useContext(Ctx);
   if (!s) throw new Error('useStore must be used inside StoreProvider');
   return s;
-}
-
-// Two months of believable household entries so Insights has something to say.
-function sampleData() {
-  const t = todayISO();
-  const entries: Entry[] = [];
-  let n = 0;
-  const add = (daysAgo: number, type: EntryType, categoryId: string, amount: number, priority: Priority, note: string, mode: PayMode = 'upi') =>
-    entries.push({ id: `s${n++}`, type, amount, categoryId, priority, note, date: shiftDate(t, -daysAgo), mode, createdAt: n });
-
-  for (const off of [0, 30]) {
-    add(off + 11, 'income', 'salary', 68000, 'need', 'Monthly salary', 'card');
-    add(off + 10, 'expense', 'rent', 18000, 'need', 'House rent', 'upi');
-    add(off + 10, 'expense', 'emi', 7500, 'need', 'Bike EMI', 'card');
-    add(off + 10, 'expense', 'investment', 5000, 'saving', 'Index fund SIP', 'upi');
-    add(off + 9, 'expense', 'groceries', 4200, 'need', 'Monthly groceries', 'upi');
-    add(off + 8, 'expense', 'bills', 1850, 'need', 'Electricity bill', 'upi');
-    add(off + 8, 'expense', 'phone', 799, 'need', 'Mobile recharge', 'upi');
-    add(off + 7, 'expense', 'eating-out', off ? 1200 : 1850, 'want', 'Dinner with friends', 'card');
-    add(off + 6, 'expense', 'transport', 650, 'need', 'Petrol', 'upi');
-    add(off + 5, 'expense', 'health', 540, 'need', 'Medicines', 'cash');
-    add(off + 4, 'expense', 'shopping', off ? 1800 : 3499, 'want', 'Sneakers on sale', 'card');
-    add(off + 4, 'expense', 'eating-out', 380, 'want', 'Swiggy', 'upi');
-    add(off + 3, 'expense', 'entertainment', 649, 'want', 'Movie night', 'upi');
-    add(off + 3, 'expense', 'household', 1250, 'need', 'Cleaning supplies', 'cash');
-    add(off + 2, 'expense', 'eating-out', 240, 'want', 'Chai and snacks', 'cash');
-    add(off + 2, 'expense', 'transport', 180, 'need', 'Auto', 'cash');
-    add(off + 1, 'expense', 'eating-out', 420, 'want', 'Zomato', 'upi');
-    add(off + 1, 'expense', 'groceries', 360, 'need', 'Milk and veggies', 'cash');
-    add(off + 0, 'expense', 'education', 1500, 'need', 'Tuition', 'upi');
-  }
-  add(12, 'income', 'freelance', 5000, 'need', 'Logo design project', 'upi');
-  add(6, 'expense', 'gifts', 2100, 'want', 'Diwali sweets', 'cash');
-  return {
-    entries,
-    budgets: { 'eating-out': 2000, shopping: 2500, groceries: 5000, entertainment: 1000 },
-    monthLimit: 50000,
-  };
 }

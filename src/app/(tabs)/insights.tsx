@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
@@ -18,7 +19,7 @@ const TONE = {
 };
 
 export default function Insights() {
-  const { entries, month, budgets, monthLimit, loadSample } = useStore();
+  const { entries, month, budgets, monthLimit } = useStore();
   const s = useMemo(() => summarize(entries, month), [entries, month]);
   const prev = useMemo(() => summarize(entries, shiftMonth(month, -1)), [entries, month]);
   const split = prioritySplit(s);
@@ -35,7 +36,7 @@ export default function Insights() {
     <Screen header={<PageTitle title="Insights" subtitle={`Where your money should go · ${monthName(month)}`} right={<MonthNav />} />}>
       {s.count === 0 ? (
         <Card padded={false}>
-          <EmptyState icon="chart-donut" title="No data for this month" body="Log a few expenses and your income to see your priorities." action="Load sample data" onAction={loadSample} />
+          <EmptyState icon="chart-donut" title="No data for this month" body="Log a few expenses and your income to see your priorities." action="Add expense" onAction={() => router.push('/add')} />
         </Card>
       ) : (
         <>

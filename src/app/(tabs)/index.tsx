@@ -11,7 +11,7 @@ import { useStore } from '@/lib/store';
 import { colors, radius } from '@/lib/theme';
 
 export default function Home() {
-  const { entries, month, budgets, monthLimit, removeEntry, loadSample } = useStore();
+  const { entries, month, budgets, monthLimit, removeEntry } = useStore();
   const s = useMemo(() => summarize(entries, month), [entries, month]);
   const sts = safeToSpend(s, month, monthLimit);
   const over = overBudget(s, budgets)[0];
@@ -118,9 +118,9 @@ export default function Home() {
           <EmptyState
             icon="notebook-edit-outline"
             title="Start your first entry"
-            body="Tap + to log an expense or your salary. Want to look around first? Load two months of sample data."
-            action="Load sample data"
-            onAction={loadSample}
+            body="Log an expense or your salary. Your insights build up as you go."
+            action="Add your first entry"
+            onAction={() => router.push('/add')}
           />
         ) : (
           recent.map((e, i) => (
